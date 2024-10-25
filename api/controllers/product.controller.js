@@ -1,13 +1,20 @@
 const Product = require("../models/product.model");
 
-// GET /api/product/
+// GET /api/product
+// GET /api/product?sortKey=key&&sortValue=value
 module.exports.allProduct = async (req, res) => {
     try {  
         let find = {
             status: 1,
         }
+
+        let sort = {};
+
+        if(req.query.sortKey && req.query.sortValue) {
+            sort[req.query.sortKey] = req.query.sortValue;
+        }
     
-        const product = await Product.find(find);
+        const product = await Product.find(find).sort(sort);
         res.json(product);
 
     } catch(error) {
